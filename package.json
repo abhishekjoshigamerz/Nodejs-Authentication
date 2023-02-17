@@ -1,0 +1,34 @@
+{
+  "name": "nodejs-authentication",
+  "version": "1.0.0",
+  "description": "Node js authentication application. This app is a custom build node js authentication applications.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhishekjoshigamerz/Nodejs-Authentication.git"
+  },
+  "keywords": [
+    "authentication-system"
+  ],
+  "author": "AbhishekJoshi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abhishekjoshigamerz/Nodejs-Authentication/issues"
+  },
+  "homepage": "https://github.com/abhishekjoshigamerz/Nodejs-Authentication#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.15.0",
+    "mongoose": "^6.9.2"
+  }
+}
