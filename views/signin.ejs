@@ -4,14 +4,14 @@
         <h1>Sign in</h1>
         
       </div>
-      <form>
+      <form method="POST" action="/user/check-authentication">
         <div class="input">
           <i class="fa-solid fa-envelope"></i>
-          <input type="email" placeholder="Email" />
+          <input type="email" name="email" placeholder="Email" />
         </div>
         <div class="input">
           <i class="fa-solid fa-lock"></i>
-          <input type="password" placeholder="Password" />
+          <input type="password" name="password" placeholder="Password" />
         </div>
         <input class="signup-btn" type="submit" value="SIGN IN" />
       </form>
@@ -19,7 +19,7 @@
       <div class="social-icons">
         <a href=""><i class="fa-brands fa-google"></i></a>
       </div>
-      <p><a href="/user/forget-password/">Forget Password</a></p>
+      <p><a href="/forgot-password/">Forget Password</a></p>
       <p>Don't have a account ? <a href="/register/">Register now</a></p>
     </div>
   </div>
