@@ -2,7 +2,7 @@ const {validationResult} = require('express-validator');
 const User = require('../../models/user');
 const bcrypt = require('bcryptjs');
 const generator = require('generate-password');
-
+const mail = require('../../helper/mail');
 module.exports.register = function (req,res){
     res.render('home');
 }
@@ -108,6 +108,9 @@ module.exports.sendNewPassword = async function (req,res){
         let newUpdate = await User.findByIdAndUpdate(user[0]._id,{password:hash});
 
         if(newUpdate){
+            //send email to user
+            mail.sendMail(req.body.email,newPassword);
+
             req.flash('success','New password has been send to your email');
         }else{
             req.flash('error','Error in changing password');   
