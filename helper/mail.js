@@ -1,27 +1,34 @@
 const nodemailer = require('nodemailer');
-
-module.exports.sendMail = async function (email,password){
-let mailTransporter = nodemailer.createTransport({
+let dotenv = require('dotenv');
+dotenv.config();
+let transporter = nodemailer.createTransport({
     service: 'gmail',
+    host: 'smtp.gmail.com',
+    secure: false,
     auth: {
-        user: '********',
-        pass: '****'
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
     }
-
 });
-let details = {
-    from: '****',
-    to: email,
-    subject: 'Your password has been reset.Check your new password in mail below',
-    text:`Your new password is ${password}. Thank you for using our service.`
-}
 
-await mailTransporter.sendMail(details,function(err,data){
-    if(err){
+module.exports.sendEmail = async function (email,password){
+    try{
+        let info  = await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'Your password has been reset.Check your new password in mail below',
+            text:`Your new password is ${password}. Thank you for using our service.`
+        });
+        if(info){
+            console.log('Email send successfully');
+            
+        }
+        
+    }catch(err){
         console.log(err);
-    }else{
-        console.log('Email sent successfully');
+        
+        
     }
-});
 
 }
+

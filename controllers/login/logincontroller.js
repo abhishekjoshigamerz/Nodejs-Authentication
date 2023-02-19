@@ -109,7 +109,7 @@ module.exports.sendNewPassword = async function (req,res){
 
         if(newUpdate){
             //send email to user
-            mail.sendMail(req.body.email,newPassword);
+            mail.sendEmail(req.body.email,newPassword);
 
             req.flash('success','New password has been send to your email');
         }else{
