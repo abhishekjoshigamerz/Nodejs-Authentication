@@ -49,6 +49,7 @@ module.exports.createSession = async function (req,res){
 
 //change password 
 module.exports.changePassword = async function (req,res){
+    console.log(` Old password is ${req.body.Oldpassword}`);
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         let message = [];
@@ -63,9 +64,12 @@ module.exports.changePassword = async function (req,res){
 
     let user = await User.findById(req.session.user[0]._id);
     if(user){
-        
-        let oldPassword = await bcrypt.compare(req.body.Oldpassword,user.password);
-        if(oldPassword){
+        let oldPassword;
+        oldPassword = await bcrypt.compare(req.body.Oldpassword,user.password);
+        if(req.session.user[0].accountType == 'googleAccount'){
+            oldPassword = req.body.Oldpassword;
+        }
+        if(oldPassword == true || oldPassword.length > 0){
             
             let saltRound  = 10;
             let salt = await bcrypt.genSalt(saltRound);
@@ -208,6 +212,7 @@ module.exports.googleAuth = async function(req,res){
         //get user data and other data as well
         let userData = await getOtherData(data.accessToken);
         if(userData){
+            let password  = await bcrypt.hash(userData.email,10);
             // res.send(userData.email);
             let email = userData.email;
             let result = await User.find({email:email});
@@ -221,7 +226,8 @@ module.exports.googleAuth = async function(req,res){
                 console.log('Result not found');
                let createdUser =  await User.create({
                     email: email,
-                    accountType:'googleAccount'
+                    accountType:'googleAccount',
+                    password: password
                 });
                 if(createdUser){
                     console.log(createdUser);
