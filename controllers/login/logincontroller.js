@@ -3,6 +3,11 @@ const User = require('../../models/user');
 const bcrypt = require('bcryptjs');
 const generator = require('generate-password');
 const mail = require('../../helper/mail');
+const dot = require('dotenv');
+const axios = require('axios');
+let qs = require('qs');
+const https = require('https');
+dot.config();
 module.exports.register = function (req,res){
     res.render('home');
 }
@@ -123,7 +128,125 @@ module.exports.sendNewPassword = async function (req,res){
         req.flash('error','No user found with this email');
         return res.redirect('back');
     }   
-
-  
-
 }
+
+
+// for google oAuth login/sign up
+
+module.exports.googleLogin = function (req,res){
+    // const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_REDIRECT_URI}&response_type=code&scope=profile email`;
+    
+    const options = {
+        client_id:process.env.googleClientId,
+        redirect_uri:process.env.googleOAuthRedirect,
+        response_type:'code',
+        prompt:'consent',
+        access_type:'offline',
+        scope:[
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/userinfo.email'
+        ].join(' ')
+    }
+    
+
+    const stringifiedParams = new URLSearchParams(options);
+    const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`;
+    return res.redirect(googleLoginUrl);
+}
+
+async function getGoogleAuthToken({code}){
+    const url = 'https://oauth2.googleapis.com/token';
+    const values = {
+        code,
+        client_id:process.env.googleClientId,
+        client_secret:process.env.googleClientSecret,
+        redirect_uri:process.env.googleOAuthRedirect,
+        grant_type:'authorization_code'
+    };
+    
+    try {
+        const res = await axios.post(url, qs.stringify(values), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false
+            })
+        });
+        if(res){
+            const { access_token, id_token } = res.data;
+            return { accessToken: access_token, idToken: id_token };
+        }
+    } catch (error) {
+        console.log(`Error here is ${error}`);
+    }
+    
+}
+
+async function  getOtherData(accessToken){
+    const { data } = await axios({
+        url:'https://www.googleapis.com/oauth2/v2/userinfo',
+        method:'get',
+        headers:{
+            Authorization: `Bearer ${accessToken}`,
+        }
+    });
+    if(data){
+        console.log(data);
+        return data;
+    }
+}
+//after user select his gmail accoutn to sign in we will be doing this
+module.exports.googleAuth = async function(req,res){
+    //get a code from 
+    const code = req.query.code;
+    
+   
+     const data =   await getGoogleAuthToken({code}); 
+    
+     if(data){
+        //get user data and other data as well
+        let userData = await getOtherData(data.accessToken);
+        if(userData){
+            // res.send(userData.email);
+            let email = userData.email;
+            let result = await User.find({email:email});
+            if(result.length>0){
+                console.log('Result found');
+                req.flash('success','Logged in successfully');
+                req.session.user = result;
+                req.session.isLoggedIn = true;
+                res.redirect('/user/dashboard/');
+            }else{
+                console.log('Result not found');
+               let createdUser =  await User.create({
+                    email: email,
+                    accountType:'googleAccount'
+                });
+                if(createdUser){
+                    console.log(createdUser);
+                    req.flash('success','User created successfully');
+                    res.redirect('/');
+                    
+                }else{
+                   
+                    req.flash('error','Error in google sign in');
+                    res.redirect('/');
+                }
+            }
+        }
+     }
+    
+}
+
+module.exports.googleAuthSuccess = function(req,res){
+    if(req.session.user){
+        console.log('session exists');
+        res.redirect('/user/dashboard/');
+    }else{
+        console.log('session does not exists');
+    }
+    
+}
+
+

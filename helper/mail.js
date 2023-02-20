@@ -19,11 +19,6 @@ module.exports.sendEmail = async function (email,password){
             subject: 'Your password has been reset.Check your new password in mail below',
             text:`Your new password is ${password}. Thank you for using our service.`
         });
-        if(info){
-            console.log('Email send successfully');
-            
-        }
-        
     }catch(err){
         console.log(err);
         

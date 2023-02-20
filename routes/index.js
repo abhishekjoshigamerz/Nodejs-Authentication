@@ -15,4 +15,9 @@ router.post('/forgot-password',checkLoggedIn.isAlreadyLoggedIn,login.sendNewPass
 router.use('/user', require('./user'));
 
 
+router.get('/googleSignIn', login.googleLogin);
+router.get('/sessions/oauth/google',login.googleAuth);
+
+router.get('/google-auth-success',login.googleAuthSuccess);
+
 module.exports = router;

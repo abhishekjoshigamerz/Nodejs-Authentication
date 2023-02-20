@@ -9,7 +9,12 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        min:8
+        min:8,
+        default:'googleSignIn'
+    },
+    accountType:{
+        type: String,
+        default:'nonGoogleAccount'
     },
     hasLoggedInBefore: {
         type: Boolean,
