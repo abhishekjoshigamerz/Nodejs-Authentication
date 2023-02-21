@@ -106,10 +106,12 @@ module.exports.changePassword = async function (req,res){
     }
 }
 
-
+//redners forgot password page
 module.exports.forgotPassword = function (req,res){
     res.render('forgotpassword');
 }
+
+//sends new password to user email if email id is found
 module.exports.sendNewPassword = async function (req,res){
     let user = await User.find({email:req.body.email});
     
@@ -145,6 +147,7 @@ module.exports.sendNewPassword = async function (req,res){
 
       return res.redirect('back');
     }else{
+
         req.flash('error','No user found with this email');
         return res.redirect('back');
     }   
@@ -173,7 +176,7 @@ module.exports.googleLogin = function (req,res){
     const googleLoginUrl = `https://accounts.google.com/o/oauth2/v2/auth?${stringifiedParams}`;
     return res.redirect(googleLoginUrl);
 }
-
+//gets google Auth token
 async function getGoogleAuthToken({code}){
     const url = 'https://oauth2.googleapis.com/token';
     const values = {
@@ -200,7 +203,7 @@ async function getGoogleAuthToken({code}){
     }
     
 }
-
+//uses google auth token to get user email id and other data
 async function  getOtherData(accessToken){
     const { data } = await axios({
         url:'https://www.googleapis.com/oauth2/v2/userinfo',
@@ -258,7 +261,7 @@ module.exports.googleAuth = async function(req,res){
      }
     
 }
-
+//redirect path checks if session is there and then redirect the user to dashboard
 module.exports.googleAuthSuccess = function(req,res){
     if(req.session.user){
         console.log('session exists');

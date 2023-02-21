@@ -1,5 +1,8 @@
 const {body} = require('express-validator');
 
+//validator array on path to check if user is entering required value or not. 
+// it is used in routes as middlware before we reach to controllers.
+
 module.exports.registerValidator = [
     body('email').not().isEmpty().withMessage('Email is required').isEmail().withMessage('Email is invalid'),
     body('password').not().isEmpty().withMessage('Password is required').isLength({min:8}).withMessage('Password must be at least 8 characters long'),

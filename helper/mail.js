@@ -1,3 +1,4 @@
+//this is helper function for reseting user password
 const nodemailer = require('nodemailer');
 let dotenv = require('dotenv');
 dotenv.config();

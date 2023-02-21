@@ -1,11 +1,12 @@
 const {validationResult} = require('express-validator');
 const User = require('../../models/user');
 const bcrypt = require('bcryptjs');
+//renders home / dashboard page
 module.exports.dashboard = function (req,res){
     res.render('dashboard');
 }
 
-
+//renders password reset page
 module.exports.passwordReset = function (req,res){
     console.log(req.session.user);
     res.render('passwordreset',{
@@ -13,7 +14,7 @@ module.exports.passwordReset = function (req,res){
         accountType: req.session.user[0].accountType
     });
 }
-
+//creates user from registration page url
 module.exports.createUser = async function (req,res){
     
     const errors = validationResult(req);
@@ -59,11 +60,11 @@ module.exports.createUser = async function (req,res){
         }
     }       
 }
-
+//renders privacy policy page
 module.exports.privacy = function (req,res){
     res.render('privacy');
 }
-
+//renders terms and conditions page
 module.exports.terms = function (req,res){
     res.render('terms');
 }
