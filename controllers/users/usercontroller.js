@@ -57,8 +57,13 @@ module.exports.createUser = async function (req,res){
                 return res.redirect('back');
             }
         }
-        
-        
-        
     }       
+}
+
+module.exports.privacy = function (req,res){
+    res.render('privacy');
+}
+
+module.exports.terms = function (req,res){
+    res.render('terms');
 }

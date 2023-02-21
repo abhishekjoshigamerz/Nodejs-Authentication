@@ -6,7 +6,6 @@ const mail = require('../../helper/mail');
 const dot = require('dotenv');
 const axios = require('axios');
 let qs = require('qs');
-const https = require('https');
 
 
 
@@ -190,9 +189,7 @@ async function getGoogleAuthToken({code}){
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            httpsAgent: new https.Agent({
-                rejectUnauthorized: false
-            })
+          
         });
         if(res){
             const { access_token, id_token } = res.data;
