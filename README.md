@@ -37,13 +37,16 @@ Node js authentication application. This app is a custom build node js authentic
     
 
 
-    googleOAuthRedirect=http://localhost:3000/sessions/oauth/google
-    googleOAuthPublicEndPoint=http://localhost:3000
+    googleOAuthRedirect= http://localhost:3000/sessions/oauth/google
+    googleOAuthPublicEndPoint= http://localhost:3000
 
-    Don't change this 2 above urls. Only change when you are putting your server on production. Also note that google oauth will work for SSL secrured sites only. 
+    Don't change this 2 above urls. Only change when you are putting your server on production. Also note that google oauth will work for SSL secrured sites only. Replace only http: part till 3000.  
 
 5. For enabling google recaptcha go to google recaptcha site and click google admin. 
 
 6. Select your version and select invisible google recaptcha which this projecgt is using . you will get the key from there. 
 
 7. replace that key with your key in signin.ejs and home.ejs pages in data-sitekey in button pages.
+
+
+You are good to go once all this steps done.
