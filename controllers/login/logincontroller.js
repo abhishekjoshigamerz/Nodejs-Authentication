@@ -7,6 +7,9 @@ const dot = require('dotenv');
 const axios = require('axios');
 let qs = require('qs');
 const https = require('https');
+
+
+
 dot.config();
 module.exports.register = function (req,res){
     res.render('home');
@@ -25,6 +28,20 @@ module.exports.logout = function (req,res){
 
 //authenticate users
 module.exports.createSession = async function (req,res){
+    
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+       
+        let message = [];
+        let result = errors.array();
+        for(let i=0;i<result.length;i++){
+            message.push(result[i].msg);
+        }
+        // set up flash message
+        req.flash('error',message);
+        return res.redirect('back');    
+    }
+
     let password = req.body.password;
     let email = req.body.email;
     let user = await User.find({email:email});

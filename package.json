@@ -33,6 +33,7 @@
     "express-session": "^1.17.3",
     "express-validator": "^6.15.0",
     "generate-password": "^1.7.0",
+    "google-recaptcha": "^1.1.0",
     "mongoose": "^6.9.2",
     "nodemailer": "^6.9.1",
     "qs": "^6.11.0",

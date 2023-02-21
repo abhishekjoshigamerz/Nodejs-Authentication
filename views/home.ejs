@@ -4,7 +4,7 @@
         <h1>Create an Account</h1>
         <p>Get started for free!</p>
       </div>
-      <form method="POST" action="/user/create-user">
+      <form method="POST" action="/user/create-user" id="demo-form">
         <div class="input">
           <i class="fa-solid fa-envelope"></i>
           <input type="email" name="email" placeholder="Email" />
@@ -17,12 +17,15 @@
             <i class="fa-solid fa-lock"></i>
             <input type="password" name="confirmPassword" placeholder="Enter your Password again" />
           </div>
-        <input class="signup-btn" type="submit" value="SIGN UP" />
+          <button class="g-recaptcha signup-btn" data-sitekey="6LebDJ4kAAAAAJpYIk6Po8txK7yVA3AVynQrSqmc" data-callback="onSubmit">Sign In</button>
       </form>
       <p>Or sign up with</p>
-      <div class="social-icons">
-        <i class="fa-brands fa-google"></i>
+      <div class="social-icons">  
+        <a href="/googleSignIn"> <i class="fa-brands fa-google"></i> </a>
       </div>
+
+
+</script>
       <p>Already have an account <a href="/">sign in</a></p>
     </div>
   </div>
